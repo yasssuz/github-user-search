@@ -12,7 +12,7 @@ export default function App() {
   );
 }
 
-const Container = styled.div`
+const Container = styled.main`
   min-height: 100vh;
   display: flex;
   flex-direction: center;
