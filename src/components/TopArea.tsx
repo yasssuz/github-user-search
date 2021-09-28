@@ -1,9 +1,19 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import styled from "styled-components";
 import { ThemeContext } from "../contexts/ThemeContext";
 
-export default function TopArea() {
+interface TopAreaProps {
+  changeUsername: (username: string) => void;
+}
+
+export default function TopArea({ changeUsername }: TopAreaProps) {
   const { changeTheme, lightMode } = useContext(ThemeContext);
+  const usernameRef = useRef<any>();
+
+  function handleSubmit(e: React.SyntheticEvent): void {
+    e.preventDefault();
+    changeUsername(usernameRef.current.value);
+  }
 
   return (
     <Container>
@@ -38,15 +48,22 @@ export default function TopArea() {
         <InputLabel htmlFor='username'>
           <img src='/assets/icon-search.svg' alt='search...' />
         </InputLabel>
-        <Input id='username' type='text' placeholder='Search username...' />
-        <SubmitBtn type='button'>Search</SubmitBtn>
+        <Input
+          ref={usernameRef}
+          name='username'
+          id='username'
+          type='text'
+          placeholder='Search username...'
+        />
+        <SubmitBtn type='button' onClick={handleSubmit}>
+          Search
+        </SubmitBtn>
       </InputArea>
     </Container>
   );
 }
 
 const Container = styled.header`
-  height: 50vh;
   width: 100%;
   max-width: 73.3rem;
 `;
