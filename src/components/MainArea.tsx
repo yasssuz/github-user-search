@@ -1,23 +1,23 @@
 import { useQuery } from "react-query";
-import UserData from "./UserData";
+import UserData from "./UserData/index";
 
 interface MainAreaProps {
   username: string;
 }
 
-interface UserProps {
-  name: string;
-  joinedAt: string;
-  username: string;
-  bio: string;
-  repos: string;
-  followers: string;
-  following: string;
-  location: string;
-  twitter: string;
-  blog: string;
-  company: string;
-}
+// interface UserProps {
+//   name: string;
+//   joinedAt: string;
+//   username: string;
+//   bio: string;
+//   repos: string;
+//   followers: string;
+//   following: string;
+//   location: string;
+//   twitter: string;
+//   blog: string;
+//   company: string;
+// }
 
 function getUser(username: string): any {
   return useQuery("user", async () => {
@@ -35,7 +35,7 @@ export default function MainArea({ username }: MainAreaProps) {
 
   if (data.message === "Not Found") return <h1>Not Found...</h1>;
 
-  const user: UserProps = {
+  const user = {
     name: data.name,
     joinedAt: data.created_at,
     username: data.login,
@@ -43,10 +43,12 @@ export default function MainArea({ username }: MainAreaProps) {
     repos: data.public_repos,
     followers: data.followers,
     following: data.following,
-    location: data.location,
-    twitter: data.twitter_username,
-    blog: data.blog,
-    company: data.company,
+    links: {
+      location: data.location,
+      twitter: data.twitter_username,
+      company: data.company,
+      blog: data.blog,
+    },
   };
 
   return <UserData user={user} />;
