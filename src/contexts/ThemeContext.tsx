@@ -16,6 +16,7 @@ export const ThemeContextProvider: FC = ({ children }) => {
       themeBtn: "#fff",
       card: "#1E2A47",
       textNorm: "#fff",
+      textBolded: "#FFF",
     },
   };
   const lightTheme: object = {
@@ -24,6 +25,7 @@ export const ThemeContextProvider: FC = ({ children }) => {
       themeBtn: "#4B6A9B",
       card: "#FEFEFE",
       textNorm: "#697C9A",
+      textBolded: "#2B3442",
     },
   };
 
