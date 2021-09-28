@@ -5,19 +5,21 @@ interface MainAreaProps {
   username: string;
 }
 
-// interface UserProps {
-//   name: string;
-//   joinedAt: string;
-//   username: string;
-//   bio: string;
-//   repos: string;
-//   followers: string;
-//   following: string;
-//   location: string;
-//   twitter: string;
-//   blog: string;
-//   company: string;
-// }
+interface UserProps {
+  name: string;
+  joinedAt: string;
+  username: string;
+  bio: string;
+  repos: string;
+  followers: string;
+  following: string;
+  links: {
+    location: string;
+    twitter: string;
+    blog: string;
+    company: string;
+  };
+}
 
 function getUser(username: string): any {
   return useQuery("user", async () => {
@@ -35,7 +37,7 @@ export default function MainArea({ username }: MainAreaProps) {
 
   if (data.message === "Not Found") return <h1>Not Found...</h1>;
 
-  const user = {
+  const user: UserProps = {
     name: data.name,
     joinedAt: data.created_at,
     username: data.login,
