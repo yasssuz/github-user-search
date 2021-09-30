@@ -36,6 +36,6 @@ const Container = styled.main`
   padding: 3.1rem 2.4rem;
 
   @media (min-width: 768px) {
-    padding: 3.1rem 4rem;
+    padding: 3.1rem 7rem;
   }
 `;
