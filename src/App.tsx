@@ -1,28 +1,20 @@
 import styled from "styled-components";
-import { QueryClient, QueryClientProvider } from "react-query";
 import { ThemeContextProvider } from "./contexts/ThemeContext";
 import TopArea from "./components/TopArea";
 import MainArea from "./components/MainArea";
-import { useState } from "react";
-
-const queryClient = new QueryClient();
+import { UserContext } from "./contexts/UserContext";
+import { useContext } from "react";
 
 export default function App() {
-  const [username, setUsername] = useState<string>("");
-
-  function changeUsername(username: string): void {
-    setUsername(username);
-  }
+  const { username } = useContext(UserContext);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeContextProvider>
-        <Container>
-          <TopArea changeUsername={changeUsername} />
-          {username && <MainArea username={username} />}
-        </Container>
-      </ThemeContextProvider>
-    </QueryClientProvider>
+    <ThemeContextProvider>
+      <Container>
+        <TopArea />
+        {username && <MainArea />}
+      </Container>
+    </ThemeContextProvider>
   );
 }
 
