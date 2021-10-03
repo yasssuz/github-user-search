@@ -1,19 +1,12 @@
 import { useContext, useRef } from "react";
 import styled from "styled-components";
 import { ThemeContext } from "../contexts/ThemeContext";
+import { UserContext } from "../contexts/UserContext";
 
-interface TopAreaProps {
-  changeUsername: (username: string) => void;
-}
-
-export default function TopArea({ changeUsername }: TopAreaProps) {
+export default function TopArea() {
   const { changeTheme, lightMode } = useContext(ThemeContext);
+  const { empty, handleSubmit } = useContext(UserContext);
   const usernameRef = useRef<any>();
-
-  function handleSubmit(e: React.SyntheticEvent): void {
-    e.preventDefault();
-    changeUsername(usernameRef.current.value);
-  }
 
   return (
     <Container>
@@ -44,7 +37,12 @@ export default function TopArea({ changeUsername }: TopAreaProps) {
           )}
         </ChangeThemeBtn>
       </ThemeArea>
-      <InputArea>
+      <InputArea
+        onSubmit={e => {
+          e.preventDefault();
+          handleSubmit(usernameRef.current.value);
+        }}
+      >
         <InputLabel htmlFor='username'>
           <img src='/assets/icon-search.svg' alt='search...' />
         </InputLabel>
@@ -55,9 +53,8 @@ export default function TopArea({ changeUsername }: TopAreaProps) {
           type='text'
           placeholder='Search username...'
         />
-        <SubmitBtn type='button' onClick={handleSubmit}>
-          Search
-        </SubmitBtn>
+        {empty && <Warn>Enter user</Warn>}
+        <SubmitBtn type='submit'>Search</SubmitBtn>
       </InputArea>
     </Container>
   );
@@ -91,6 +88,15 @@ const ChangeThemeBtn = styled.button`
   }
 `;
 
+const Warn = styled.small`
+  font-weight: bold;
+  font-size: 1.5rem;
+  line-height: 2.2rem;
+  color: #f74646;
+  margin-right: 2.4rem;
+  /* position: absolute; */
+`;
+
 const InputArea = styled.form`
   margin-top: 3.6rem;
   border-radius: 1.5rem;
@@ -103,6 +109,7 @@ const InputArea = styled.form`
   justify-content: space-between;
   padding: 0.7rem 0.7rem 0.7rem 1.6rem;
   transition: height 0.3s ease;
+  position: relative;
 
   @media (min-width: 768px) {
     height: 6.9rem;
