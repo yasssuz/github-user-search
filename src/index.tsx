@@ -1,7 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { createGlobalStyle } from "styled-components";
 import App from "./App";
+import { UserProvider } from "./contexts/UserContext";
+
+const queryClient = new QueryClient();
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -26,8 +30,12 @@ const GlobalStyle = createGlobalStyle`
 
 ReactDOM.render(
   <React.StrictMode>
-    <GlobalStyle />
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <UserProvider>
+        <GlobalStyle />
+        <App />
+      </UserProvider>
+    </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
