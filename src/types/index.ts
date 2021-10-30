@@ -16,13 +16,9 @@ export interface UserProps {
 }
 
 export interface TopAreaProps {
-  setUser: (user: UserProps) => void;
+  setUser: (user: UserProps | null) => void;
 }
 
 export interface UserDataProps {
-  user: UserProps;
-}
-
-export interface MainAreaProps {
   user: UserProps;
 }
