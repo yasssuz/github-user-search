@@ -6,7 +6,8 @@ import { joinedDate } from "../utils/formatters";
 
 export default function TopArea({ setUser }: TopAreaProps) {
   const { changeTheme, lightMode } = useContext(ThemeContext);
-  const [empty, setEmpty] = useState<boolean>();
+  const [empty, setEmpty] = useState<boolean>(false);
+  const [notFound, setNotFound] = useState<boolean>(false);
   const usernameRef = useRef<HTMLInputElement>(null);
 
   function handleSubmit() {
@@ -15,6 +16,7 @@ export default function TopArea({ setUser }: TopAreaProps) {
       usernameRef.current?.value === undefined
     ) {
       setEmpty(true);
+      setUser(null);
       return;
     }
 
@@ -25,6 +27,14 @@ export default function TopArea({ setUser }: TopAreaProps) {
   async function fetchUser(username: string): Promise<void> {
     const response = await fetch(`https://api.github.com/users/${username}`);
     const data = await response.json();
+
+    if (response.status !== 200) {
+      setNotFound(true);
+      setUser(null);
+      return;
+    }
+
+    setNotFound(false);
 
     const user: UserProps = {
       pfp: data.avatar_url,
@@ -92,6 +102,7 @@ export default function TopArea({ setUser }: TopAreaProps) {
           placeholder='Search username...'
         />
         {empty && <Warn>Enter user</Warn>}
+        {notFound && <Warn>Not Found</Warn>}
         <SubmitBtn type='submit'>Search</SubmitBtn>
       </InputArea>
     </Container>
