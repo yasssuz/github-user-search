@@ -1,4 +1,4 @@
-import { createContext, FC, useState } from "react";
+import { createContext, FC, useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
 
 interface ThemeContextProps {
@@ -32,6 +32,16 @@ export const ThemeContextProvider: FC = ({ children }) => {
   function changeTheme(): void {
     setLightMode(prev => !prev);
   }
+
+  useEffect(() => {
+    localStorage.getItem("theme") === "light" && setLightMode(true);
+  }, []);
+
+  useEffect(() => {
+    const mode = lightMode ? "light" : "dark";
+
+    localStorage.setItem("theme", mode);
+  }, [lightMode]);
 
   return (
     <ThemeContext.Provider value={{ changeTheme, lightMode }}>
