@@ -1,18 +1,22 @@
 import styled from "styled-components";
 import { ThemeContextProvider } from "./contexts/ThemeContext";
 import TopArea from "./components/TopArea";
-import MainArea from "./components/MainArea";
-import { UserContext } from "./contexts/UserContext";
-import { useContext } from "react";
+import { useState } from "react";
+import { UserProps } from "./types";
+import UserData from "./components/UserData";
 
 export default function App() {
-  const { username } = useContext(UserContext);
+  const [user, setUser] = useState<UserProps>();
+
+  function setUserData(user: UserProps): void {
+    setUser(user);
+  }
 
   return (
     <ThemeContextProvider>
       <Container>
-        <TopArea />
-        {username && <MainArea />}
+        <TopArea setUser={setUserData} />
+        {user && <UserData user={user} />}
       </Container>
     </ThemeContextProvider>
   );

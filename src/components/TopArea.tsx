@@ -1,12 +1,50 @@
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import { ThemeContext } from "../contexts/ThemeContext";
-import { UserContext } from "../contexts/UserContext";
+import { UserProps, TopAreaProps } from "../types";
+import { joinedDate } from "../utils/formatters";
 
-export default function TopArea() {
+export default function TopArea({ setUser }: TopAreaProps) {
   const { changeTheme, lightMode } = useContext(ThemeContext);
-  const { empty, handleSubmit } = useContext(UserContext);
-  const usernameRef = useRef<any>();
+  const [empty, setEmpty] = useState<boolean>();
+  const usernameRef = useRef<HTMLInputElement>(null);
+
+  function handleSubmit() {
+    if (
+      usernameRef.current?.value.trim() === "" ||
+      usernameRef.current?.value === undefined
+    ) {
+      setEmpty(true);
+      return;
+    }
+
+    setEmpty(false);
+    fetchUser(usernameRef.current.value);
+  }
+
+  async function fetchUser(username: string): Promise<void> {
+    const response = await fetch(`https://api.github.com/users/${username}`);
+    const data = await response.json();
+
+    const user: UserProps = {
+      pfp: data.avatar_url,
+      name: data.name,
+      joinedAt: joinedDate(data.created_at),
+      username: data.login,
+      bio: data.bio,
+      repos: data.public_repos,
+      followers: data.followers,
+      following: data.following,
+      links: {
+        location: data.location,
+        twitter: data.twitter_username,
+        company: data.company,
+        blog: data.blog,
+      },
+    };
+
+    setUser(user);
+  }
 
   return (
     <Container>
@@ -40,7 +78,7 @@ export default function TopArea() {
       <InputArea
         onSubmit={e => {
           e.preventDefault();
-          handleSubmit(usernameRef.current.value);
+          handleSubmit();
         }}
       >
         <InputLabel htmlFor='username'>
