@@ -2,25 +2,7 @@ import styled from "styled-components";
 import TopArea from "./TopArea";
 import LinksArea from "./LinksArea";
 import StatsArea from "./StatsArea";
-
-interface UserDataProps {
-  user: {
-    pfp: string;
-    name: string;
-    joinedAt: string;
-    username: string;
-    bio: string;
-    repos: string;
-    followers: string;
-    following: string;
-    links: {
-      location: string;
-      twitter: string;
-      blog: string;
-      company: string;
-    };
-  };
-}
+import { UserDataProps } from "../../types";
 
 export default function UserData({ user }: UserDataProps) {
   return (
