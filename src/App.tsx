@@ -6,9 +6,9 @@ import { UserProps } from "./types";
 import UserData from "./components/UserData";
 
 export default function App() {
-  const [user, setUser] = useState<UserProps>();
+  const [user, setUser] = useState<UserProps | null>(null);
 
-  function setUserData(user: UserProps): void {
+  function setUserData(user: UserProps | null): void {
     setUser(user);
   }
 
